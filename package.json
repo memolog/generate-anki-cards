@@ -1,0 +1,30 @@
+{
+  "name": "generate-anki-cards",
+  "version": "1.0.0",
+  "description": "Generate the import file for Anki ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Anki",
+    "puppeteer"
+  ],
+  "author": "Yutaka Yamaguchi",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mkdirp": "^0.5.2",
+    "@types/puppeteer": "^1.11.1",
+    "@types/touch": "^3.1.1",
+    "commander": "^2.19.0",
+    "mkdirp": "^0.5.1",
+    "puppeteer": "^1.11.0",
+    "touch": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.11.1",
+    "eslint-config-google": "^0.11.0",
+    "typescript": "^3.1.1",
+    "typescript-eslint-parser": "^21.0.2"
+  }
+}

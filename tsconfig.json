@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "noImplicitAny": true,
+    "lib": ["esnext", "es2018", "es2017", "dom"],
+    "allowJs": true,
+    "outDir": "./js",
+    "rootDir": "./ts"
+  },
+  "include": ["./ts/**/*"],
+  "exclude": ["node_modules"]
+}

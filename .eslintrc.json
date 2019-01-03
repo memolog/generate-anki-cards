@@ -1,0 +1,9 @@
+{
+  "extends": "google",
+  "parser": "typescript-eslint-parser",
+  "rules": {
+    "object-curly-spacing": [2, "never"],
+    "indent": "off",
+    "require-jsdoc": "off"
+  }
+}

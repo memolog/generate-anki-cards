@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSave": true,
+    "eslint.validate": ["javascript", "typescript"],
+    "prettier.printWidth": 120,
+    "prettier.eslintIntegration": true
+  }
