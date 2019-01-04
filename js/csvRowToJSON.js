@@ -9,7 +9,6 @@ const generateFileName = (fileName) => {
 };
 function csvRowToJSON(row) {
     const data = row.split(/,/);
-    console.log(data);
     let [answerWord, questionData, imageOptions, soundOptions, appendixOptions,] = data;
     answerWord = answerWord.replace(/&#44;/g, ',');
     const [questionType, question, questionSupplier, questionId,] = questionData.split(/:/);
