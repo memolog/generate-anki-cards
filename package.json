@@ -2,7 +2,7 @@
   "name": "generate-anki-cards",
   "version": "1.0.0",
   "description": "Generate the import file for Anki ",
-  "main": "index.js",
+  "bin": "./js/bin.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
