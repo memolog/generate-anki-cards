@@ -65,7 +65,7 @@ The data is assumed the card has the following fields
 10. backAppendix
 11. copyright
 
-<img width="730" alt="2019-01-04 10 49 24" src="https://user-images.githubusercontent.com/494278/50670442-040c9c80-100f-11e9-919c-d14dbecfcadd.png">
+![](https://user-images.githubusercontent.com/494278/50670442-040c9c80-100f-11e9-919c-d14dbecfcadd.png)
 
 ### Sample Card Type
 
@@ -127,4 +127,6 @@ Back Template
 {{BackSound}}
 ```
 
-<img width="1480" alt="2019-01-04 10 50 44" src="https://user-images.githubusercontent.com/494278/50670441-03740600-100f-11e9-941f-33822891cea8.png">
+![](https://user-images.githubusercontent.com/494278/50670441-03740600-100f-11e9-941f-33822891cea8.png)
+
+![anki-sample](https://user-images.githubusercontent.com/494278/50671484-8d26d200-1015-11e9-82ee-92657968c9af.gif)
