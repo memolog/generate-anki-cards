@@ -46,7 +46,7 @@ json
 The generated data is like the following.
 
 ```
-
+apple;リンゴ;<img src="apple.jpg">;;;;;[sound:apple.mp3];ˈæp.əl;;Image from <a href="https://dictionary.cambridge.org/dictionary/english/apple">Cambridge Dictionary</a><br>Sound from <a href="https://dictionary.cambridge.org/dictionary/english/apple">Cambridge Dictionary</a>
 ```
 
 ### Card Fields
