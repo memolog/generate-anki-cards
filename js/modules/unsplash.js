@@ -55,8 +55,13 @@ function unsplash(page, searchWord, outDir, mediaDir, id) {
             let copyright;
             if (thumbUrl) {
                 thumbUrl = thumbUrl.replace(/auto=format/, 'fm=jpg');
-                imageUrl = imageUrl || page.url();
-                copyright = `<a href="${host}${imageUrl}">Unsplash</a>`;
+                if (!imageUrl) {
+                    imageUrl = page.url();
+                }
+                if (!/^https?::/.test(imageUrl)) {
+                    imageUrl = `${host}${imageUrl}`;
+                }
+                copyright = `<a href="${imageUrl}">Unsplash</a>`;
                 if (!id) {
                     dataCache[searchWord] = dataCache[searchWord] || {};
                     dataCache[searchWord].unsplash = path.basename(imageUrl);

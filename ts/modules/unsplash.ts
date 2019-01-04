@@ -71,9 +71,14 @@ export default function unsplash(
       let copyright;
       if (thumbUrl) {
         thumbUrl = thumbUrl.replace(/auto=format/, 'fm=jpg');
-        imageUrl = imageUrl || page.url();
+        if (!imageUrl) {
+          imageUrl = page.url();
+        }
+        if (!/^https?::/.test(imageUrl)) {
+          imageUrl = `${host}${imageUrl}`;
+        }
 
-        copyright = `<a href="${host}${imageUrl}">Unsplash</a>`;
+        copyright = `<a href="${imageUrl}">Unsplash</a>`;
 
         if (!id) {
           dataCache[searchWord] = dataCache[searchWord] || {};
