@@ -4,10 +4,13 @@ Genarating a import file for [Anki](https://ankiweb.net)
 
 The main purpose of this CLI tool is generating English words list to memorize with Anki. The script can parse csv or json file, like the following format
 
+This tools uses Puppeteer and Chromium. You have to wait for a while to install them.
+
 ## Usage
 
 ```bash
-node ./js/bin.js -o ../out -i ../out/data.csv
+npm install -g generate-anki-cards
+generate-anki-cards -o ../out -i ../out/data.csv
 ```
 
 ## Format
