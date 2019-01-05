@@ -20,27 +20,11 @@ const main = () => {
       .option('-o, --output <file>')
       .option('--media <string>', 'media directory to save images and sounds')
       .option('--parser <string>', 'CSV parser to use')
-      .options('--config <file>', 'configuration file to use')
       .parse(process.argv);
 
     if (!program.input || !program.output) {
       reject(new Error('Input or output files are required'));
       return;
-    }
-
-    let config = {};
-    if (program.config) {
-      try {
-        const readFile = util.promisify(fs.readFile);
-        const configData = await readFile(
-          path.resolve(process.cwd(), program.config),
-          {encoding: 'utf8'}
-        );
-        config = JSON.parse(configData);
-      } catch (err) {
-        reject(err);
-        return;
-      }
     }
 
     let browser: puppeteer.Browser;
@@ -84,12 +68,7 @@ const main = () => {
       for (const jsonData of jsonDataArray) {
         try {
           console.log(`---- ${jsonData.backText} ----`);
-          const content = await fetchResouce(
-            page,
-            jsonData,
-            program.opts(),
-            config
-          );
+          const content = await fetchResouce(page, jsonData, program.opts());
           contents.push(content);
         } catch (err) {
           stream.destroy(err);

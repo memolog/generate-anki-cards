@@ -8,13 +8,16 @@ export interface fetchResult {
   downloaded?: boolean;
 }
 
+export interface fetchOptions {
+  page: puppeteer.Page;
+  searchWord: string;
+  outDir: string;
+  mediaDir: string;
+  id?: string;
+  name?: string;
+  ext?: string;
+}
+
 export interface fetchModule {
-  (
-    page: puppeteer.Page,
-    searchWord: string,
-    outDir: string,
-    mediaDir: string,
-    id?: string,
-    config?: any
-  ): Promise<fetchResult>;
+  (options: fetchOptions): Promise<fetchResult>;
 }

@@ -3,7 +3,7 @@ import * as path from 'path';
 
 import download from './download';
 import checkIfFileExists from './checkFileExists';
-import {fetchModule, fetchResult} from './typings'; // eslint-disable-line
+import {fetchModule, fetchOptions, fetchResult} from './typings'; // eslint-disable-line
 
 interface dataOptions {
   supplier?: string;
@@ -38,8 +38,7 @@ export default async function fetchResource(
   data: {
     [key: string]: string | dataOptions;
   },
-  options?: options,
-  config?: any
+  options?: options
 ) {
   return new Promise<string>(async (resolve, reject) => {
     const outDir = options.output
@@ -96,15 +95,17 @@ export default async function fetchResource(
         const modulePath = path.resolve(__dirname, `./modules/${supplier}`);
         const module: fetchModule = (await import(modulePath)).default;
         let result: fetchResult;
+        const fetchOptions: fetchOptions = {
+          page,
+          searchWord,
+          outDir,
+          mediaDir,
+          id: imageId,
+          name: imageName,
+          ext: imageExt,
+        };
         try {
-          result = await module(
-            page,
-            searchWord,
-            outDir,
-            mediaDir,
-            imageId,
-            config
-          );
+          result = await module(fetchOptions);
         } catch (err) {
           console.log(err);
         }
@@ -117,14 +118,7 @@ export default async function fetchResource(
           if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
             const module: fetchModule = (await import(modulePath)).default;
-            result = await module(
-              page,
-              searchWord,
-              outDir,
-              mediaDir,
-              imageId,
-              config
-            );
+            result = await module(fetchOptions);
           }
         }
 
@@ -175,8 +169,18 @@ export default async function fetchResource(
         const modulePath = path.resolve(__dirname, `./modules/${supplier}`);
         const module: fetchModule = (await import(modulePath)).default;
         let result: fetchResult;
+        const fetchOptions: fetchOptions = {
+          page,
+          searchWord,
+          outDir,
+          mediaDir,
+          id: soundId,
+          name: soundName,
+          ext: soundExt,
+        };
+
         try {
-          result = await module(page, searchWord, outDir, mediaDir, soundId);
+          result = await module(fetchOptions);
         } catch (err) {
           console.log(err);
         }
@@ -189,7 +193,7 @@ export default async function fetchResource(
           if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
             const module: fetchModule = (await import(modulePath)).default;
-            result = await module(page, searchWord, outDir, mediaDir, soundId);
+            result = await module(fetchOptions);
           }
         }
 

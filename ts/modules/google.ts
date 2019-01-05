@@ -4,6 +4,8 @@ import {DataCache} from '../dataCache'; // eslint-disable-line
 import {fetchResult} from '../typings'; // eslint-disable-line
 
 import * as textToSpeech from '@google-cloud/text-to-speech';
+import * as fs from 'fs';
+import * as util from 'util';
 
 export default function unsplash(
   page: puppeteer.Page,
@@ -11,16 +13,13 @@ export default function unsplash(
   outDir: string,
   mediaDir: string,
   id?: string,
-  config?: any
+  name?: string
 ) {
   return new Promise<fetchResult>(async (resolve, reject) => {
-    const textToSpeechAPIKehy =
-      config.google && config.google.textToSpeechApiKey;
-
     let soundUrl;
     let copyright;
 
-    if (textToSpeechApiKey) {
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
       const request = {
         input: {text: searchWord},
         voice: {
@@ -32,6 +31,12 @@ export default function unsplash(
 
       const client = new textToSpeech.TextToSpeechClient();
       const [response] = await client.synthesizeSpeech(request);
+      const writeFile = util.promisify(fs.writeFile);
+
+      const dir = `${outDir}/${mediaDir}`;
+
+      await writeFile('output.mp3', response.audioContent, 'binary');
+      console.log('Audio content written to file: output.mp3');
     } else {
       const encodedWord = decodeURIComponent(searchWord);
 
