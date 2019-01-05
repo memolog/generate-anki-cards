@@ -5,6 +5,7 @@ export interface fetchResult {
   soundUrl?: string;
   soundIPA?: string;
   copyright?: string;
+  downloaded?: boolean;
 }
 
 export interface fetchModule {
@@ -13,6 +14,7 @@ export interface fetchModule {
     searchWord: string,
     outDir: string,
     mediaDir: string,
-    id?: string
+    id?: string,
+    config?: any
   ): Promise<fetchResult>;
 }

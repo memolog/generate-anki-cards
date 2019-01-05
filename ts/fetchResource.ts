@@ -38,7 +38,8 @@ export default async function fetchResource(
   data: {
     [key: string]: string | dataOptions;
   },
-  options?: options
+  options?: options,
+  config?: any
 ) {
   return new Promise<string>(async (resolve, reject) => {
     const outDir = options.output
@@ -96,16 +97,34 @@ export default async function fetchResource(
         const module: fetchModule = (await import(modulePath)).default;
         let result: fetchResult;
         try {
-          result = await module(page, searchWord, outDir, mediaDir, imageId);
+          result = await module(
+            page,
+            searchWord,
+            outDir,
+            mediaDir,
+            imageId,
+            config
+          );
         } catch (err) {
           console.log(err);
         }
-        if (!result.thumbUrl && !/local|media/.test(supplier)) {
+        if (
+          !result.thumbUrl &&
+          !result.downloaded &&
+          !/local|media/.test(supplier)
+        ) {
           const fallback = dataOptions.fallback || 'unsplash';
-          if (fallback && fallback !== 'nonef') {
+          if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
             const module: fetchModule = (await import(modulePath)).default;
-            result = await module(page, searchWord, outDir, mediaDir, imageId);
+            result = await module(
+              page,
+              searchWord,
+              outDir,
+              mediaDir,
+              imageId,
+              config
+            );
           }
         }
 
@@ -161,7 +180,11 @@ export default async function fetchResource(
         } catch (err) {
           console.log(err);
         }
-        if (!result.soundUrl && !/local|media/.test(supplier)) {
+        if (
+          !result.soundUrl &&
+          !result.downloaded &&
+          !/local|media/.test(supplier)
+        ) {
           const fallback = dataOptions.fallback || 'google';
           if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
@@ -171,9 +194,15 @@ export default async function fetchResource(
         }
 
         const soundUrl = result.soundUrl;
-        if (soundUrl) {
+        if (result.copyright) {
           copyright = result.copyright;
+        }
+
+        if (result.soundIPA) {
           soundIPA = result.soundIPA;
+        }
+
+        if (soundUrl) {
           if (
             !(await checkIfFileExists(soundName, soundExt, outDir, mediaDir))
           ) {
