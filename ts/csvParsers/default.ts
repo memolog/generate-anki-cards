@@ -25,17 +25,18 @@ const csvRowToJSON = (row: string) => {
     question,
     questionSupplier,
     questionId,
+    questionFallback,
   ] = questionData.split(/:/);
 
   const questionWord = questionType === 'question' ? question : questionType;
 
-  let [imageSupplier, imageId, imageName] = imageOptions
+  let [imageSupplier, imageId, imageName, imageFallback] = imageOptions
     ? imageOptions.split(/:/)
-    : [null, null, null];
+    : [null, null, null, null];
 
-  const [soundSupplier, soundId] = soundOptions
+  let [soundSupplier, soundId, soundName, soundFallback] = soundOptions
     ? soundOptions.split(/:/)
-    : [null, null];
+    : [null, null], null, null];
 
   const [appendix] = appendixOptions ? appendixOptions.split(/:/g) : [null];
 
@@ -57,7 +58,6 @@ const csvRowToJSON = (row: string) => {
     imageName = fileName;
   }
 
-  let soundName;
   let soundExt = '.mp3';
   let soundFileName;
   if (/^(local|direct)$/.test(soundSupplier)) {
@@ -78,6 +78,7 @@ const csvRowToJSON = (row: string) => {
       name: imageName,
       id: imageId,
       searchWord: answerWord,
+      fallback: imageFallback,
     },
     backText: answerWord,
   };
@@ -89,6 +90,7 @@ const csvRowToJSON = (row: string) => {
       searchWord: questionWord,
       name: generateFileName(questionWord),
       id: questionId,
+      fallback: questionFallback
     };
   } else {
     jsonData.frontText = questionWord;
@@ -101,6 +103,7 @@ const csvRowToJSON = (row: string) => {
       id: soundId,
       name: soundName,
       searchWord: answerWord,
+      fallback: soundFallback,
     };
   }
 

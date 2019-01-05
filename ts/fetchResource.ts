@@ -102,7 +102,7 @@ export default async function fetchResource(
         }
         if (!result.thumbUrl && !/local|media/.test(supplier)) {
           const fallback = dataOptions.fallback || 'unsplash';
-          if (fallback) {
+          if (fallback && fallback !== 'nonef') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
             const module: fetchModule = (await import(modulePath)).default;
             result = await module(page, searchWord, outDir, mediaDir, imageId);
@@ -163,7 +163,7 @@ export default async function fetchResource(
         }
         if (!result.soundUrl && !/local|media/.test(supplier)) {
           const fallback = dataOptions.fallback || 'google';
-          if (fallback) {
+          if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
             const module: fetchModule = (await import(modulePath)).default;
             result = await module(page, searchWord, outDir, mediaDir, soundId);
