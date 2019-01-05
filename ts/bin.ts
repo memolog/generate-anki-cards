@@ -10,7 +10,6 @@ import * as puppeteer from 'puppeteer';
 import fetchResouce from './fetchResource';
 import createImportFile from './createImportFile';
 import {DataCache} from './dataCache';
-import csvRowToJSON from './csvRowToJSON';
 
 const main = () => {
   return new Promise(async (resolve, reject) => {
@@ -19,6 +18,7 @@ const main = () => {
       .option('-i, --input <file')
       .option('-o, --output <file>')
       .option('--media <string>', 'media directory to save images and sounds')
+      .option('--parser <string>', 'CSV parser to use')
       .parse(process.argv);
 
     if (!program.input || !program.output) {
@@ -48,15 +48,13 @@ const main = () => {
       stream.pause();
 
       let jsonDataArray = [];
+      const csvParserName = program.parser || 'default';
       if (inputFileExt === '.csv') {
-        const rows = data.split(/\n/);
-        for (const row of rows) {
-          // skip blank line
-          if (!row) {
-            continue;
-          }
-          jsonDataArray.push(csvRowToJSON(row));
-        }
+        const csvParser = await import(path.resolve(
+          __dirname,
+          `csvParsers/${csvParserName}`
+        ));
+        jsonDataArray = csvParser.default(data);
       } else {
         try {
           jsonDataArray = JSON.parse(data);

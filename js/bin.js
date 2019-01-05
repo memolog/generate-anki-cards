@@ -9,7 +9,6 @@ const puppeteer = require("puppeteer");
 const fetchResource_1 = require("./fetchResource");
 const createImportFile_1 = require("./createImportFile");
 const dataCache_1 = require("./dataCache");
-const csvRowToJSON_1 = require("./csvRowToJSON");
 const main = () => {
     return new Promise(async (resolve, reject) => {
         program
@@ -17,6 +16,7 @@ const main = () => {
             .option('-i, --input <file')
             .option('-o, --output <file>')
             .option('--media <string>', 'media directory to save images and sounds')
+            .option('--parser <string>', 'CSV parser to use')
             .parse(process.argv);
         if (!program.input || !program.output) {
             reject(new Error('Input or output files are required'));
@@ -41,15 +41,10 @@ const main = () => {
         stream.on('data', async (data) => {
             stream.pause();
             let jsonDataArray = [];
+            const csvParserName = program.parser || 'default';
             if (inputFileExt === '.csv') {
-                const rows = data.split(/\n/);
-                for (const row of rows) {
-                    // skip blank line
-                    if (!row) {
-                        continue;
-                    }
-                    jsonDataArray.push(csvRowToJSON_1.default(row));
-                }
+                const csvParser = await Promise.resolve().then(() => require(path.resolve(__dirname, `csvParsers/${csvParserName}`)));
+                jsonDataArray = csvParser.default(data);
             }
             else {
                 try {

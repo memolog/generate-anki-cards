@@ -7,7 +7,7 @@ const generateFileName = (fileName: string) => {
     .toLocaleLowerCase();
 };
 
-export default function csvRowToJSON(row: string) {
+const csvRowToJSON = (row: string) => {
   const data = row.split(/,/);
 
   let [
@@ -109,4 +109,17 @@ export default function csvRowToJSON(row: string) {
   }
 
   return jsonData;
+};
+
+export default function defaultCsvParser(data: string) {
+  const result = [];
+  const rows = data.split(/\n/);
+  for (const row of rows) {
+    // skip blank line
+    if (!row) {
+      continue;
+    }
+    result.push(csvRowToJSON(row));
+  }
+  return result;
 }
