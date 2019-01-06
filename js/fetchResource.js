@@ -61,18 +61,29 @@ async function fetchResource(page, data, options) {
                 const modulePath = path.resolve(__dirname, `./modules/${supplier}`);
                 const module = (await Promise.resolve().then(() => require(modulePath))).default;
                 let result;
+                const fetchOptions = {
+                    page,
+                    searchWord,
+                    outDir,
+                    mediaDir,
+                    id: imageId,
+                    name: imageName,
+                    ext: imageExt,
+                };
                 try {
-                    result = await module(page, searchWord, outDir, mediaDir, imageId);
+                    result = await module(fetchOptions);
                 }
                 catch (err) {
                     console.log(err);
                 }
-                if (!result.thumbUrl && !/local|media/.test(supplier)) {
+                if (!result.thumbUrl &&
+                    !result.downloaded &&
+                    !/local|media/.test(supplier)) {
                     const fallback = dataOptions.fallback || 'unsplash';
-                    if (fallback) {
+                    if (fallback && fallback !== 'none') {
                         const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
                         const module = (await Promise.resolve().then(() => require(modulePath))).default;
-                        result = await module(page, searchWord, outDir, mediaDir, imageId);
+                        result = await module(fetchOptions);
                     }
                 }
                 const thumbUrl = result.thumbUrl;
@@ -113,24 +124,39 @@ async function fetchResource(page, data, options) {
                 const modulePath = path.resolve(__dirname, `./modules/${supplier}`);
                 const module = (await Promise.resolve().then(() => require(modulePath))).default;
                 let result;
+                const fetchOptions = {
+                    page,
+                    searchWord,
+                    outDir,
+                    mediaDir,
+                    id: soundId,
+                    name: soundName,
+                    ext: soundExt,
+                };
                 try {
-                    result = await module(page, searchWord, outDir, mediaDir, soundId);
+                    result = await module(fetchOptions);
                 }
                 catch (err) {
                     console.log(err);
                 }
-                if (!result.soundUrl && !/local|media/.test(supplier)) {
+                if (!result.soundUrl &&
+                    !result.downloaded &&
+                    !/local|media/.test(supplier)) {
                     const fallback = dataOptions.fallback || 'google';
-                    if (fallback) {
+                    if (fallback && fallback !== 'none') {
                         const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
                         const module = (await Promise.resolve().then(() => require(modulePath))).default;
-                        result = await module(page, searchWord, outDir, mediaDir, soundId);
+                        result = await module(fetchOptions);
                     }
                 }
                 const soundUrl = result.soundUrl;
-                if (soundUrl) {
+                if (result.copyright) {
                     copyright = result.copyright;
+                }
+                if (result.soundIPA) {
                     soundIPA = result.soundIPA;
+                }
+                if (soundUrl) {
                     if (!(await checkFileExists_1.default(soundName, soundExt, outDir, mediaDir))) {
                         await download_1.default(soundUrl, soundName, soundExt, outDir, mediaDir);
                     }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function unsplash(page, searchWord, outDir, mediaDir, id) {
+function unsplash(options) {
     return new Promise(async (resolve, reject) => {
         resolve({});
     });

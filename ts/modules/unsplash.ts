@@ -2,16 +2,11 @@ import * as puppeteer from 'puppeteer'; // eslint-disable-line
 import * as path from 'path';
 
 import {DataCache} from '../dataCache'; // eslint-disable-line
-import {fetchResult} from '../typings'; // eslint-disable-line
+import {fetchResult, fetchOptions} from '../typings'; // eslint-disable-line
 
-export default function unsplash(
-  page: puppeteer.Page,
-  searchWord: string,
-  outDir: string,
-  mediaDir: string,
-  id?: string
-) {
+export default function unsplash(options: fetchOptions) {
   return new Promise<fetchResult>(async (resolve, reject) => {
+    let {page, searchWord, id} = options;
     const host = 'https://unsplash.com';
     const dataCacheInstance = DataCache.getInstance();
     const dataCache = await dataCacheInstance.readData();

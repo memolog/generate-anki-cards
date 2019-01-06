@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const dataCache_1 = require("../dataCache"); // eslint-disable-line
-function cambridge(page, searchWord, outDir, mediaDir, id) {
+function cambridge(options) {
     return new Promise(async (resolve, reject) => {
+        let { page, searchWord } = options;
         const host = 'https://dictionary.cambridge.org';
         searchWord = searchWord.replace(/\s/g, '-');
         const url = `${host}/dictionary/english/${searchWord}`;

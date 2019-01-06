@@ -11,14 +11,14 @@ const csvRowToJSON = (row) => {
     const data = row.split(/,/);
     let [answerWord, questionData, imageOptions, soundOptions, appendixOptions,] = data;
     answerWord = answerWord.replace(/&#44;/g, ',');
-    const [questionType, question, questionSupplier, questionId,] = questionData.split(/:/);
+    const [questionType, question, questionSupplier, questionId, questionFallback,] = questionData.split(/:/);
     const questionWord = questionType === 'question' ? question : questionType;
-    let [imageSupplier, imageId, imageName] = imageOptions
+    let [imageSupplier, imageId, imageName, imageFallback] = imageOptions
         ? imageOptions.split(/:/)
-        : [null, null, null];
-    const [soundSupplier, soundId] = soundOptions
+        : [null, null, null, null];
+    let [soundSupplier, soundId, soundName, soundFallback] = soundOptions
         ? soundOptions.split(/:/)
-        : [null, null];
+        : [null, null, null, null];
     const [appendix] = appendixOptions ? appendixOptions.split(/:/g) : [null];
     const fileName = generateFileName(answerWord);
     let imageFileName;
@@ -36,7 +36,6 @@ const csvRowToJSON = (row) => {
     if (!imageName) {
         imageName = fileName;
     }
-    let soundName;
     let soundExt = '.mp3';
     let soundFileName;
     if (/^(local|direct)$/.test(soundSupplier)) {
@@ -55,6 +54,7 @@ const csvRowToJSON = (row) => {
             name: imageName,
             id: imageId,
             searchWord: answerWord,
+            fallback: imageFallback,
         },
         backText: answerWord,
     };
@@ -65,6 +65,7 @@ const csvRowToJSON = (row) => {
             searchWord: questionWord,
             name: generateFileName(questionWord),
             id: questionId,
+            fallback: questionFallback,
         };
     }
     else {
@@ -77,6 +78,7 @@ const csvRowToJSON = (row) => {
             id: soundId,
             name: soundName,
             searchWord: answerWord,
+            fallback: soundFallback,
         };
     }
     if (appendix) {

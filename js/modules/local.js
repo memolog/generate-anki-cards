@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const path = require("path");
 const checkFileExists_1 = require("../checkFileExists");
-function unsplash(page, searchWord, outDir, mediaDir, id) {
+function unsplash(options) {
     return new Promise(async (resolve, reject) => {
+        const { outDir, mediaDir, id } = options;
         const resoucePath = `${outDir}/local/${id}`;
         const distPath = `${outDir}/${mediaDir}/${id}`;
         const distExt = path.extname(distPath);

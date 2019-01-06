@@ -1,15 +1,10 @@
 import * as puppeteer from 'puppeteer'; // eslint-disable-line
 import {DataCache} from '../dataCache'; // eslint-disable-line
-import {fetchResult} from '../typings'; // eslint-disable-line
+import {fetchResult, fetchOptions} from '../typings'; // eslint-disable-line
 
-export default function cambridge(
-  page: puppeteer.Page,
-  searchWord: string,
-  outDir: string,
-  mediaDir: string,
-  id?: string
-) {
+export default function cambridge(options: fetchOptions) {
   return new Promise<fetchResult>(async (resolve, reject) => {
+    let {page, searchWord} = options;
     const host = 'https://dictionary.cambridge.org';
     searchWord = searchWord.replace(/\s/g, '-');
     const url = `${host}/dictionary/english/${searchWord}`;

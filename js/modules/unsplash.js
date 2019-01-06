@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const dataCache_1 = require("../dataCache"); // eslint-disable-line
-function unsplash(page, searchWord, outDir, mediaDir, id) {
+function unsplash(options) {
     return new Promise(async (resolve, reject) => {
+        let { page, searchWord, id } = options;
         const host = 'https://unsplash.com';
         const dataCacheInstance = dataCache_1.DataCache.getInstance();
         const dataCache = await dataCacheInstance.readData();

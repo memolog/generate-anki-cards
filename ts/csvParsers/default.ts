@@ -36,7 +36,7 @@ const csvRowToJSON = (row: string) => {
 
   let [soundSupplier, soundId, soundName, soundFallback] = soundOptions
     ? soundOptions.split(/:/)
-    : [null, null], null, null];
+    : [null, null, null, null];
 
   const [appendix] = appendixOptions ? appendixOptions.split(/:/g) : [null];
 
@@ -90,7 +90,7 @@ const csvRowToJSON = (row: string) => {
       searchWord: questionWord,
       name: generateFileName(questionWord),
       id: questionId,
-      fallback: questionFallback
+      fallback: questionFallback,
     };
   } else {
     jsonData.frontText = questionWord;

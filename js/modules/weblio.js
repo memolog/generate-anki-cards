@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const dataCache_1 = require("../dataCache"); // eslint-disable-line
-function unsplash(page, searchWord, outDir, mediaDir, id) {
+function unsplash(options) {
     return new Promise(async (resolve, reject) => {
+        const { page, searchWord } = options;
         const host = 'https://ejje.weblio.jp';
         const encodedWord = searchWord.replace(/\s/g, '+');
         const url = `${host}/content/${encodedWord}`;

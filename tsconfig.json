@@ -4,7 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "removeComments": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "lib": ["esnext", "es2018", "es2017", "dom"],
     "allowJs": true,
     "outDir": "./js",
