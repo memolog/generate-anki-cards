@@ -21,7 +21,7 @@ const main = () => {
       .option('--parser <string>', 'CSV parser to use')
       .parse(process.argv);
 
-    if (!program.input || !program.output) {
+    if (!program.input) {
       reject(new Error('Input or output files are required'));
       return;
     }
@@ -39,7 +39,13 @@ const main = () => {
     const contents: string[] = [];
     const inputFile = path.resolve(process.cwd(), program.input);
     const inputFileExt = path.extname(inputFile);
-    const outDir = path.resolve(process.cwd(), program.output);
+
+    let outDir;
+    if (program.output) {
+      outDir = path.resolve(process.cwd(), program.output);
+    } else {
+      outDir = path.dirname(inputFile);
+    }
 
     const dataCacheInstance = DataCache.getInstance(outDir);
     const stream = fs.createReadStream(inputFile, 'utf8');
@@ -67,7 +73,12 @@ const main = () => {
       for (const jsonData of jsonDataArray) {
         try {
           console.log(`---- ${jsonData.backText} ----`);
-          const content = await fetchResouce(page, jsonData, program.opts());
+          const content = await fetchResouce(
+            page,
+            jsonData,
+            outDir,
+            program.opts()
+          );
           contents.push(content);
         } catch (err) {
           stream.destroy(err);
