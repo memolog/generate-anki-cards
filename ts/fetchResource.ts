@@ -38,12 +38,10 @@ export default async function fetchResource(
   data: {
     [key: string]: string | dataOptions;
   },
+  outDir: string,
   options?: options
 ) {
   return new Promise<string>(async (resolve, reject) => {
-    const outDir = options.output
-      ? path.resolve(process.cwd(), options.output)
-      : 'out';
     const mediaDir = options.media ? options.media : 'media';
 
     const content = new Array(9);
@@ -157,6 +155,7 @@ export default async function fetchResource(
 
         const soundExt = soundFileName ? path.extname(soundFileName) : '.mp3';
         const soundName =
+          dataOptions.name ||
           (soundFileName ? path.basename(soundFileName, soundExt) : null) ||
           searchWord
             .replace(/\s/g, '_')

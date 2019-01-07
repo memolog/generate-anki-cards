@@ -16,11 +16,8 @@ const arrayMap = {
     backAppendix: 9,
     copyright: 10,
 };
-async function fetchResource(page, data, options) {
+async function fetchResource(page, data, outDir, options) {
     return new Promise(async (resolve, reject) => {
-        const outDir = options.output
-            ? path.resolve(process.cwd(), options.output)
-            : 'out';
         const mediaDir = options.media ? options.media : 'media';
         const content = new Array(9);
         const imageCopyright = [];
@@ -114,7 +111,8 @@ async function fetchResource(page, data, options) {
                     ? soundId
                     : null;
                 const soundExt = soundFileName ? path.extname(soundFileName) : '.mp3';
-                const soundName = (soundFileName ? path.basename(soundFileName, soundExt) : null) ||
+                const soundName = dataOptions.name ||
+                    (soundFileName ? path.basename(soundFileName, soundExt) : null) ||
                     searchWord
                         .replace(/\s/g, '_')
                         .replace(/[^0-9a-zA-Z_]/g, '')

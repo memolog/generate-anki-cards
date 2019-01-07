@@ -1,20 +1,23 @@
 const generateFileName = (fileName: string) => {
   return fileName
+    .replace(/<[^>]+>([^<]*)<\/[^>]+>/, '$1')
     .replace(/\s/g, '_')
     .replace(/[^0-9a-zA-Z_]/g, '')
     .toLocaleLowerCase();
 };
 
-const csvRowToJSON = (word: string) => {
+const csvRowToJSON = (row: string) => {
+  const [word, ...sentences] = row.split(/,/).map((r) => r.trim());
+  const sentence = sentences.join(', ');
   const fileName = generateFileName(word);
 
-  const jsonData: any = {
+  const jsonData = {
     frontText: word,
-    backText: word,
-    backSound: {
-      supplier: 'cambridge',
+    backText: sentence,
+    frontSound: {
+      supplier: 'google',
       name: fileName,
-      searchWord: word,
+      searchWord: sentence,
     },
   };
 
@@ -23,13 +26,7 @@ const csvRowToJSON = (word: string) => {
 
 export default function defaultCsvParser(data: string) {
   const result = [];
-  let rows = data.split(/,/);
-  rows = rows.map((row) => {
-    if (row) {
-      return row.trim();
-    }
-    return row;
-  });
+  const rows = data.split(/\n/);
   for (const row of rows) {
     // skip blank line
     if (!row) {

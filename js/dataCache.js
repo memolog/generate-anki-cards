@@ -48,7 +48,7 @@ class DataCache {
     }
     updateCacheFile() {
         return new Promise((resolve, reject) => {
-            const content = JSON.stringify(this.data);
+            const content = JSON.stringify(this.data) || '{}';
             const dataCacheFilePath = this.getFilePath();
             fs.writeFile(dataCacheFilePath, content, { flag: 'w+' }, (err) => {
                 if (err) {

@@ -43,13 +43,16 @@ export default function unsplash(options: fetchOptions) {
         );
       }
 
+      const copyrightUrl = 'https://cloud.google.com/text-to-speech/';
+      copyright = `<a href="${copyrightUrl}">Cloud Text-to-Speech</a>`;
+
       downloaded = true;
     } else {
       const encodedWord = decodeURIComponent(searchWord);
 
-      const soundUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodedWord}&tl=en&total=1&idx=0&textlen=100`;
+      soundUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodedWord}&tl=en&total=1&idx=0&textlen=100`;
       const copyrightUrl = `https://translate.google.com/#view=home&op=translate&sl=en&tl=ja&text=${encodedWord}`;
-      const copyright = `<a href="${copyrightUrl}">Google Translate</a>`;
+      copyright = `<a href="${copyrightUrl}">Google Translate</a>`;
     }
 
     resolve({soundUrl, copyright, downloaded});
