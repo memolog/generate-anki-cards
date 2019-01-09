@@ -8,13 +8,14 @@ import checkIfFileExists from '../checkFileExists';
 
 export default function unsplash(options: fetchOptions) {
   return new Promise<fetchResult>(async (resolve, reject) => {
-    const {outDir, mediaDir, id} = options;
+    const {outDir, mediaDir, id, name, ext} = options;
     const resoucePath = `${outDir}/local/${id}`;
-    const distPath = `${outDir}/${mediaDir}/${id}`;
+    const distPath = `${outDir}/${mediaDir}/${name}${ext}`;
     const distExt = path.extname(distPath);
     const distName = path.basename(distPath, distExt);
+    const downloaded = true;
     if (await checkIfFileExists(distName, distExt, outDir, mediaDir)) {
-      resolve({});
+      resolve({downloaded});
       return;
     }
     fs.copyFile(resoucePath, distPath, (err) => {
@@ -22,7 +23,7 @@ export default function unsplash(options: fetchOptions) {
         reject(err);
         return;
       }
-      resolve({});
+      resolve({downloaded});
     });
   });
 }

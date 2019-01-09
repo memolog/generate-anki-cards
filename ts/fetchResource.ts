@@ -107,11 +107,7 @@ export default async function fetchResource(
         } catch (err) {
           console.log(err);
         }
-        if (
-          !result.thumbUrl &&
-          !result.downloaded &&
-          !/local|media/.test(supplier)
-        ) {
+        if (!result.thumbUrl && !result.downloaded && !/media/.test(supplier)) {
           const fallback = dataOptions.fallback || 'unsplash';
           if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
@@ -183,11 +179,7 @@ export default async function fetchResource(
         } catch (err) {
           console.log(err);
         }
-        if (
-          !result.soundUrl &&
-          !result.downloaded &&
-          !/local|media/.test(supplier)
-        ) {
+        if (!result.soundUrl && !result.downloaded && !/media/.test(supplier)) {
           const fallback = dataOptions.fallback || 'google';
           if (fallback && fallback !== 'none') {
             const modulePath = path.resolve(__dirname, `./modules/${fallback}`);
