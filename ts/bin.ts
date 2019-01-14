@@ -6,6 +6,7 @@ import * as program from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as puppeteer from 'puppeteer';
+import * as util from 'util';
 
 import fetchResouce from './fetchResource';
 import createImportFile from './createImportFile';
@@ -54,12 +55,34 @@ const main = () => {
       stream.pause();
 
       let jsonDataArray = [];
-      const csvParserName = program.parser || 'default';
+      let csvParserName = program.parser;
+      if (!csvParserName) {
+        const match = path.dirname(inputFile).match(/\/([^\/]+)$/);
+        if (match && match[1]) {
+          csvParserName = match[1].replace(
+            /_([a-z])/g,
+            (substr, word: string) => {
+              return word.toLocaleUpperCase();
+            }
+          );
+        } else {
+          csvParserName = 'default';
+        }
+      }
       if (inputFileExt === '.csv') {
-        const csvParser = await import(path.resolve(
+        let csvParserPath = path.resolve(
           __dirname,
-          `csvParsers/${csvParserName}`
-        ));
+          `csvParsers/${csvParserName}.js`
+        );
+        const fsExists = util.promisify(fs.exists);
+        if (!(await fsExists(csvParserPath))) {
+          csvParserName = 'default';
+          csvParserPath = path.resolve(
+            __dirname,
+            `csvParsers/${csvParserName}.js`
+          );
+        }
+        const csvParser = await import(csvParserPath);
         jsonDataArray = csvParser.default(data);
       } else {
         try {

@@ -6,6 +6,7 @@ const program = require("commander");
 const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
+const util = require("util");
 const fetchResource_1 = require("./fetchResource");
 const createImportFile_1 = require("./createImportFile");
 const dataCache_1 = require("./dataCache");
@@ -46,9 +47,29 @@ const main = () => {
         stream.on('data', async (data) => {
             stream.pause();
             let jsonDataArray = [];
-            const csvParserName = program.parser || 'default';
+            let csvParserName = program.parser;
+            if (!csvParserName) {
+                const match = path.dirname(inputFile).match(/\/([^\/]+)$/);
+                if (match && match[1]) {
+                    csvParserName = match[1].replace(/_([a-z])/g, (substr, word) => {
+                        return word.toLocaleUpperCase();
+                    });
+                }
+                else {
+                    csvParserName = 'default';
+                }
+            }
+            console.log(csvParserName);
             if (inputFileExt === '.csv') {
-                const csvParser = await Promise.resolve().then(() => require(path.resolve(__dirname, `csvParsers/${csvParserName}`)));
+                let csvParserPath = path.resolve(__dirname, `csvParsers/${csvParserName}.js`);
+                const fsExists = util.promisify(fs.exists);
+                if (!(await fsExists(csvParserPath))) {
+                    console.log('dddd');
+                    console.log(csvParserPath);
+                    csvParserName = 'default';
+                    csvParserPath = path.resolve(__dirname, `csvParsers/${csvParserName}.js`);
+                }
+                const csvParser = await Promise.resolve().then(() => require(csvParserPath));
                 jsonDataArray = csvParser.default(data);
             }
             else {
