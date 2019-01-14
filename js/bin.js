@@ -15,13 +15,10 @@ const main = () => {
             .version('1.0.0')
             .option('-i, --input <file')
             .option('-o, --output <file>')
+            .option('-d, --dirname <directory>')
             .option('--media <string>', 'media directory to save images and sounds')
             .option('--parser <string>', 'CSV parser to use')
             .parse(process.argv);
-        if (!program.input) {
-            reject(new Error('Input or output files are required'));
-            return;
-        }
         let browser;
         let page;
         try {
@@ -33,11 +30,13 @@ const main = () => {
             return;
         }
         const contents = [];
-        const inputFile = path.resolve(process.cwd(), program.input);
+        const dir = program.dirname || '.';
+        const input = program.input || 'data.csv';
+        const inputFile = path.resolve(process.cwd(), dir, input);
         const inputFileExt = path.extname(inputFile);
         let outDir;
         if (program.output) {
-            outDir = path.resolve(process.cwd(), program.output);
+            outDir = path.resolve(process.cwd(), dir, program.output);
         }
         else {
             outDir = path.dirname(inputFile);
