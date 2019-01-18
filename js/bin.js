@@ -59,13 +59,10 @@ const main = () => {
                     csvParserName = 'default';
                 }
             }
-            console.log(csvParserName);
             if (inputFileExt === '.csv') {
                 let csvParserPath = path.resolve(__dirname, `csvParsers/${csvParserName}.js`);
                 const fsExists = util.promisify(fs.exists);
                 if (!(await fsExists(csvParserPath))) {
-                    console.log('dddd');
-                    console.log(csvParserPath);
                     csvParserName = 'default';
                     csvParserPath = path.resolve(__dirname, `csvParsers/${csvParserName}.js`);
                 }
