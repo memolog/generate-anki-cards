@@ -15,7 +15,6 @@ function unsplash(options) {
             if (!(await checkFileExists_1.default(name, ext, outDir, mediaDir))) {
                 console.log('download audio file from google text-to-speech API');
                 const request = {
-                    input: { text: searchWord },
                     voice: {
                         languageCode: 'en-US',
                         ssmGender: 'NEUTRAL',
@@ -24,6 +23,13 @@ function unsplash(options) {
                         audioEncoding: 'MP3',
                     },
                 };
+                // Simple check the text is written in a ssml format or not.
+                if (/^<speak>.+<\/speak>$/.test(searchWord)) {
+                    request.input = { ssml: searchWord };
+                }
+                else {
+                    request.input = { text: searchWord };
+                }
                 const client = new textToSpeech.TextToSpeechClient();
                 const [response] = await client.synthesizeSpeech(request);
                 const writeFile = util.promisify(fs.writeFile);
