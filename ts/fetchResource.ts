@@ -126,11 +126,18 @@ export default async function fetchResource(
           }
         }
 
-        const html = `<img src="${imageName}${imageExt}">`;
-        content[arrayMap[key]] = html;
-        if (copyright) {
-          imageCopyright.push(copyright);
+        if (
+          thumbUrl ||
+          (result && result.downloaded) ||
+          /media/.test(supplier)
+        ) {
+          const html = `<img src="${imageName}${imageExt}">`;
+          content[arrayMap[key]] = html;
+          if (copyright) {
+            imageCopyright.push(copyright);
+          }
         }
+
         continue;
       }
 

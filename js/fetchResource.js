@@ -88,10 +88,14 @@ async function fetchResource(page, data, outDir, options) {
                         await download_1.default(thumbUrl, imageName, imageExt, outDir, mediaDir);
                     }
                 }
-                const html = `<img src="${imageName}${imageExt}">`;
-                content[arrayMap[key]] = html;
-                if (copyright) {
-                    imageCopyright.push(copyright);
+                if (thumbUrl ||
+                    (result && result.downloaded) ||
+                    /media/.test(supplier)) {
+                    const html = `<img src="${imageName}${imageExt}">`;
+                    content[arrayMap[key]] = html;
+                    if (copyright) {
+                        imageCopyright.push(copyright);
+                    }
                 }
                 continue;
             }

@@ -22,12 +22,24 @@ const csvRowToJSON = (row: string) => {
   };
 
   if (sentences.length) {
-    const sentenceTranslation = sentences.pop();
+    let sentenceTranslation;
+    for (const [index, sentence] of sentences.entries()) {
+      // Basic Latin /\u0000-\u007F/
+      // General Punctuation /\u2000-\u206F/
+      if (/^[\u0000-\u007F\u2000-\u206F]*$/.test(sentence)) {
+        continue;
+      }
+      sentenceTranslation = sentences.splice(index).join(', ');
+      break;
+    }
     const sentence = sentences.join(', ');
     const backSoundFileName = generateFileName(sentence);
+    const backAppendix = sentenceTranslation
+      ? `${sentence}<br>${sentenceTranslation}`
+      : sentence;
 
     Object.assign(jsonData, {
-      backAppendix: `${sentence}<br>${sentenceTranslation}`,
+      backAppendix: backAppendix,
       backSound: {
         supplier: 'google',
         name: backSoundFileName,
