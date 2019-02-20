@@ -1,6 +1,6 @@
 {
   "name": "generate-anki-cards",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Generate the import file for Anki ",
   "bin": "./js/bin.js",
   "scripts": {
