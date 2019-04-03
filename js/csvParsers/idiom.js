@@ -9,8 +9,9 @@ const generateFileName = (fileName) => {
 };
 const csvRowToJSON = (row) => {
     const [word, ...sentences] = row.split(/,/).map((r) => r.trim());
-    const sentence = sentences.join(', ');
+    let sentence = sentences.join(', ');
     const fileName = generateFileName(word);
+    sentence = sentence.replace(/&#44;/g, ',');
     const jsonData = {
         frontText: word,
         backText: sentence,
